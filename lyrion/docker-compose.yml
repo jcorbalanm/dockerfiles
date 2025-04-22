@@ -1,0 +1,24 @@
+services:
+  lms:
+    container_name: lms
+    image: lmscommunity/lyrionmusicserver:stable
+    volumes:
+      - /opt/lms/config:/config:rw
+      #- /media/music:/music:ro
+      #- truenas-musica:/music:ro
+      - /media/wd-media/musica:/music:ro
+      #- /<somewhere>:/playlist:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    #network_mode: "host"
+    ports:
+      - 9000:9000/tcp
+      - 9090:9090/tcp
+      - 3483:3483/tcp
+      - 3483:3483/udp
+    environment:
+      - HTTP_PORT=9000
+      - PUID=1000
+      - PGID=1000
+      - EXTRA_ARGS=--advertiseaddr=192.168.0.188
+    restart: always
