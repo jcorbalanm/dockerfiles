@@ -10,6 +10,23 @@ services:
     volumes:
       - /home/jcorbalan:/workspace
       - /opt/code-server/config:/config
-    ports:
-      - 8443:8443
     restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.coder.entrypoints=http"
+      - "traefik.http.routers.coder.rule=Host(`coder.kibit.net`)"
+      - "traefik.http.middlewares.coder-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.coder.middlewares=coder-https-redirect"
+      - "traefik.http.routers.coder-secure.entrypoints=https"
+      - "traefik.http.routers.coder-secure.rule=Host(`coder.kibit.net`)"
+      - "traefik.http.routers.coder-secure.tls=true"
+      - "traefik.docker.network=proxy"
+    networks:
+      proxy:
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    external: true
