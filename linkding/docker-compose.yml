@@ -2,10 +2,27 @@ services:
   linkding:
     container_name: "${LD_CONTAINER_NAME:-linkding}"
     image: sissbruecker/linkding:latest
-    ports:
-      - "${LD_HOST_PORT:-9090}:9090"
     volumes:
       - "${LD_HOST_DATA_DIR:-./data}:/etc/linkding/data"
     env_file:
       - .env
     restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.linkding.entrypoints=http"
+      - "traefik.http.routers.linkding.rule=Host(`linkding.kibit.net`)"
+      - "traefik.http.middlewares.linkding-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.linkding.middlewares=linkding-https-redirect"
+      - "traefik.http.routers.linkding-secure.entrypoints=https"
+      - "traefik.http.routers.linkding-secure.rule=Host(`linkding.kibit.net`)"
+      - "traefik.http.routers.linkding-secure.tls=true"
+      - "traefik.docker.network=proxy"
+    networks:
+      proxy:
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    external: true
