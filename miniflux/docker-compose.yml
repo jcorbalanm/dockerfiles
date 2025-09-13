@@ -1,0 +1,53 @@
+services:
+  miniflux:
+    image: miniflux/miniflux:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://miniflux:secret@db/miniflux?sslmode=disable
+      - RUN_MIGRATIONS=1
+      - CREATE_ADMIN=1
+      - ADMIN_USERNAME=jcorbalan
+      - ADMIN_PASSWORD=091Police#
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.miniflux.entrypoints=http"
+      - "traefik.http.routers.miniflux.rule=Host(`miniflux.kibit.net`)"
+      - "traefik.http.middlewares.miniflux-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.miniflux.middlewares=miniflux-https-redirect"
+      - "traefik.http.routers.miniflux-secure.entrypoints=https"
+      - "traefik.http.routers.miniflux-secure.rule=Host(`miniflux.kibit.net`)"
+      - "traefik.http.routers.miniflux-secure.tls=true"
+      - "traefik.docker.network=proxy"
+    networks:
+      proxy:
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      - POSTGRES_USER=miniflux
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=miniflux
+    volumes:
+      - miniflux-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "miniflux"]
+      interval: 10s
+      start_period: 30s
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  miniflux-db:
