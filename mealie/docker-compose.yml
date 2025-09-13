@@ -1,0 +1,39 @@
+services:
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:v3.1.2
+    container_name: mealie
+    restart: always
+    deploy: 
+      resources:
+        limits:
+          memory: 500M
+    volumes:
+      - /opt/mealie/data:/app/data/
+    environment:
+      ALLOW_SIGNUP: "false"
+      PUID: 1000
+      PGID: 1000
+      TZ: Eurome/Madrid
+      BASE_URL: https://mealie.kibit.net
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mealie.entrypoints=http"
+      - "traefik.http.routers.mealie.rule=Host(`mealie.kibit.net`)"
+      - "traefik.http.middlewares.mealie-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.mealie.middlewares=mealie-https-redirect"
+      - "traefik.http.routers.mealie-secure.entrypoints=https"
+      - "traefik.http.routers.mealie-secure.rule=Host(`mealie.kibit.net`)"
+      - "traefik.http.routers.mealie-secure.tls=true"
+      - "traefik.docker.network=proxy"
+    networks:
+      proxy:
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  mealie-data:
