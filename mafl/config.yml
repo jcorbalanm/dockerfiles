@@ -1,0 +1,315 @@
+title: panel kibit
+lang: es
+theme: system
+checkUpdates: true
+
+layout:
+  grid:
+    small: 2
+    medium: 3
+    large: 4
+    xlarge: 5
+
+tags:
+  - name: k3s
+    color: yellow
+  - name: docker
+    color: blue
+  - name: virtualización
+    color: orange
+  - name: almacenamiento
+    color: purple
+  - name: redes
+    color: lime
+  - name: todo
+    color: red
+  - name: migrar
+    color: red
+  - name: eliminar
+    color: red
+
+services:
+  Servicios:
+    - title: Code server
+      description: IDE Online
+      link: https://coder.kibit.net/
+      icon:
+        name: simple-icons:coder
+        color: '#000000'
+        #background: '#000000'
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+
+    - title: Paperless
+      description: Gestor de documentos
+      link: https://paperless.kibit.net/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/paperless-ngx.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+
+    - title: qBittorrent
+      description: Cliente Bittorrent
+      link: https://qbittorrent.kibit.net/
+      icon:
+        url: https://zh.opensuse.org/images/6/66/New_qBittorrent_Logo.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+
+    - title: Slskd
+      description: Cliente P2P de música
+      link: https://slskd.kibit.net/
+      icon:
+        url: https://raw.githubusercontent.com/slskd/slskd/2d2d8d948fd91a4040fe9e0a85b120a27f9d8b5d/etc/icon.svg
+        #background: '#18141c'
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+
+    - title: Plex
+      description: Reproductor de medios
+      link: https://plex.kibit.net/
+      icon:
+        name: simple-icons:plex
+        color: '#ebaf00'
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+
+    - title: Jellyfin
+      description: Reproductor de medios
+      link: https://jellyfin.kibit.net/
+      icon:
+        url: https://raw.githubusercontent.com/jellyfin/jellyfin-ux/d90406f379d721f1b60f1e130681f76f8fa8390a/branding/SVG/icon-transparent.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+
+    - title: Linkding
+      description: Gestor de marcadores
+      link: https://linkding.kibit.net/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/linkding.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+
+    - title: Miniflux
+      description: Agregador de RSS
+      link: https://miniflux.kibit.net/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/miniflux.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+
+    - title: LMS (Traefik)
+      description: Streaming de audio
+      link: https://lms.kibit.net
+      icon:
+        name: cbi:lyrion
+        #background: '#18141c'
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+        - todo
+
+    - title: LMS (IP)
+      description: Streaming de audio
+      link: https://192.168.0.124:9000/
+      icon:
+        name: cbi:lyrion
+        #background: '#18141c'
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+        - todo
+
+    - title: Mealie
+      description: Gestor de recetas
+      link: https://mealie.kibit.net/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/mealie.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+
+    - title: Forjejo
+      description: Repositorio de código
+      link: https://forjejo.kibit.net/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/forgejo.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+        - todo
+
+  Administración:
+    - title: Proxmox 1
+      description: Nodo 1 de Proxmox
+      link: https://node1.kibit.net:8006/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/proxmox.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - virtualización
+
+    - title: Proxmox TFG
+      description: Futuro Nodo 2 de Proxmox
+      link: https://192.168.0.123:8006/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/proxmox.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - virtualización
+
+    - title: Portainer
+      description: Gestor de contenedores
+      link: https://portainer.kibit.net/
+      icon:
+        #name: devicon:portainer
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/portainer-pink.svg
+        #color: '#ebaf00'
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+        - virtualización
+
+    - title: Traefik
+      description: Proxy de red
+      link: https://traefik.kibit.net/
+      icon:
+        name: devicon:traefikproxy
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+        - redes
+
+    - title: Checkmate
+      description: Herramienta de monitorización
+      link: https://checkmate.kibit.net/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/checkmate.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - docker
+        - redes
+
+    - title: Truenas Scale
+      description: Mi NAS virtualizado
+      link: https://truenas-scale.kibit.net/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/truenas-core.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - almacenamiento
+
+    - title: WD My BookLive
+      description: Antiguo NAS papá
+      link: https://192.168.0.241/
+      icon:
+        name: simple-icons:westerndigital
+        color: '#0864a4'
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - almacenamiento
+
+    - title: Archer C6
+      description: AP casa mamá
+      link: https://192.168.0.1/
+      icon:
+          name: simple-icons:tplink
+          color: '#4accd5'
+          wrap: true
+      status:
+        enabled: true
+      tags:
+        - redes
+
+    - title: HG8147X6
+      description: Router casa mamá
+      link: https://192.168.100.1/
+      icon:
+          name: simple-icons:huawei
+          color: '#e8141e'
+          wrap: true
+      status:
+        enabled: true
+      tags:
+        - redes
+
+  Kubernetes:
+    - title: Nginx
+      description: Servicio de prueba
+      link: https://192.168.1.50
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/nginx.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - k3s
+
+    - title: Rancher
+      description: Plataforma de control
+      link: https://192.168.1.51/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/rancher.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - k3s
+
+    - title: Longhorn
+      description: Almacenamiento distribuido
+      link: https://192.168.1.52/
+      icon:
+        url: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/rancher-longhorn.svg
+        wrap: true
+      status:
+        enabled: true
+      tags:
+        - k3s
+        - almacenamiento

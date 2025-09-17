@@ -1,0 +1,27 @@
+services:
+  mafl:
+    container_name: mafl
+    image: hywax/mafl
+    restart: unless-stopped
+    volumes:
+      - /opt/mafl:/app/data
+      - ./config.yml:/app/data/config.yml
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mafl.entrypoints=http"
+      - "traefik.http.routers.mafl.rule=Host(`kibit.net`)"
+      - "traefik.http.middlewares.mafl-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.mafl.middlewares=mafl-https-redirect"
+      - "traefik.http.routers.mafl-secure.entrypoints=https"
+      - "traefik.http.routers.mafl-secure.rule=Host(`kibit.net`)"
+      - "traefik.http.routers.mafl-secure.tls=true"
+      - "traefik.docker.network=proxy"
+    networks:
+      proxy:
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    external: true
