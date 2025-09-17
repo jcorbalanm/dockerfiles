@@ -1,0 +1,97 @@
+[
+  {
+    "name": "kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "pihole.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "traefik.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "mafl.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "coder.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "qbittorrent.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "slskd.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "plex.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "jellyfin.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "linkding.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "miniflux.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "lms.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "mealie.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "forjejo.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "portainer.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "paperless.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "jackett.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "radarr.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  },
+  {
+    "name": "lidarr.kibit.net",
+    "type": "A",
+    "value": "100.64.0.10"
+  }
+]

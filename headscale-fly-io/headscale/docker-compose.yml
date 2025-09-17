@@ -1,0 +1,26 @@
+services:
+  headscale:
+    container_name: headscale
+    image: headscale/headscale:v0.25.1
+    command: serve
+    restart: unless-stopped
+    volumes:
+      - ./config:/etc/headscale/
+      - /opt/headscale:/var/lib/headscale/
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+
+  fly-wireguard-peer:
+    container_name: headscale-fly-wireguard-peer
+    image: ghcr.io/digitallyrefined/docker-wireguard-tunnel:v3
+    restart: unless-stopped
+    environment:
+      - SERVICES=peer1:headscale:80:80,peer1:headscale:443:443
+    cap_add:
+      - NET_ADMIN
+    links:
+      - headscale:headscale
+    volumes:
+      - ./fly-wireguard:/etc/wireguard
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"

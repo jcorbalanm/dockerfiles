@@ -1,0 +1,50 @@
+# fly.toml app configuration file generated for kibit on 2025-08-13T21:18:46+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'kibit'
+primary_region = 'cdg'
+
+[build]
+  image = 'ghcr.io/digitallyrefined/docker-wireguard-tunnel:v3'
+
+[env]
+  DOMAIN = 'kibit.fly.dev'
+  PEERS = '1'
+  SERVICES = 'peer1:headscale:80:80,peer1:headscale:443:443'
+
+[[mounts]]
+  source = 'wireguard_data'
+  destination = '/etc/wireguard'
+
+[[services]]
+  protocol = 'udp'
+  internal_port = 51820
+
+  [[services.ports]]
+    port = 51820
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 80
+
+  [[services.ports]]
+    port = 80
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 443
+
+  [[services.ports]]
+    port = 443
+#    handlers = ['tls', 'http']
+
+#    [services.ports.tls_options]
+#      alpn = ['h2', 'http/1.1']
+#      versions = ['TLSv1.2', 'TLSv1.3']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
