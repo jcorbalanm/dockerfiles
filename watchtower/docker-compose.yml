@@ -1,0 +1,8 @@
+services:
+  watchtower:
+    image: containrrr/watchtower
+    environment:
+      - WATCHTOWER_CLEANUP=false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
