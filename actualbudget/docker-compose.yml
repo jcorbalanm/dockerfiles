@@ -1,0 +1,33 @@
+services:
+  actual_server:
+    image: docker.io/actualbudget/actual-server:latest
+    volumes:
+      - /opt/actualbudget:/data
+    healthcheck:
+      # Enable health check for the instance
+      test: ['CMD-SHELL', 'node src/scripts/health-check.js']
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.actualbudget.entrypoints=http"
+      - "traefik.http.routers.actualbudget.rule=Host(`actualbudget.kibit.net`)"
+      - "traefik.http.middlewares.actualbudget-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.actualbudget.middlewares=actualbudget-https-redirect"
+      - "traefik.http.routers.actualbudget-secure.entrypoints=https"
+      - "traefik.http.routers.actualbudget-secure.rule=Host(`actualbudget.kibit.net`)"
+      - "traefik.http.routers.actualbudget-secure.tls=true"
+      - "traefik.docker.network=proxy"
+      - "com.centurylinklabs.watchtower.enable=false"
+    networks:
+      proxy:
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    external: true
