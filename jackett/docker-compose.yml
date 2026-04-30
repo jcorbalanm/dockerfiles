@@ -1,0 +1,27 @@
+services:
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+    volumes:
+      - /opt/jackett/config:/config
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jackett.entrypoints=http"
+      - "traefik.http.routers.jackett.rule=Host(`jackett.kibit.net`)"
+      - "traefik.http.middlewares.jackett-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.jackett.middlewares=jackett-https-redirect"
+      - "traefik.http.routers.jackett-secure.entrypoints=https"
+      - "traefik.http.routers.jackett-secure.rule=Host(`jackett.kibit.net`)"
+      - "traefik.http.routers.jackett-secure.tls=true"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
