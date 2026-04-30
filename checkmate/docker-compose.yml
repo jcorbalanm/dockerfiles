@@ -1,0 +1,46 @@
+services:
+  server:
+    image: ghcr.io/bluewave-labs/checkmate-backend-mono:latest
+    restart: always
+    environment:
+      - UPTIME_APP_API_BASE_URL=https://checkmate.kibit.net/api/v1
+      - UPTIME_APP_CLIENT_HOST=https://checkmate.kibit.net
+      - DB_CONNECTION_STRING=mongodb://mongodb:27017/uptime_db
+      - CLIENT_HOST=https://checkmate.kibit.net/
+      - JWT_SECRET=${JWT_SECRET}
+    networks:
+      - checkmate
+      - proxy
+    depends_on:
+      - mongodb
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.checkmate.entrypoints=http"
+      - "traefik.http.routers.checkmate.rule=Host(`checkmate.kibit.net`)"
+      - "traefik.http.middlewares.checkmate-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.checkmate.middlewares=checkmate-https-redirect"
+      - "traefik.http.routers.checkmate-secure.entrypoints=https"
+      - "traefik.http.routers.checkmate-secure.rule=Host(`checkmate.kibit.net`)"
+      - "traefik.http.routers.checkmate-secure.tls=true"
+      - "traefik.http.services.checkmate.loadbalancer.server.port=52345"
+      - "traefik.docker.network=proxy"
+  mongodb:
+    image: ghcr.io/bluewave-labs/checkmate-mongo:latest
+    restart: always
+    command: ["mongod", "--quiet", "--bind_ip_all"]
+    volumes:
+      - /opt/checkmate/mongo/data:/data/db
+    networks:
+      - checkmate
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')", "--quiet"]
+      interval: 5s
+      timeout: 30s
+      start_period: 0s
+      start_interval: 1s
+      retries: 30
+
+networks:
+  checkmate:
+  proxy:
+    external: true
