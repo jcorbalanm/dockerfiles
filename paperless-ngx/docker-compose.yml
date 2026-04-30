@@ -1,0 +1,58 @@
+services:
+  broker:
+    image: docker.io/library/redis:8
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    networks:
+      paperless:
+  db:
+    image: docker.io/library/postgres:17
+    restart: unless-stopped
+    volumes:
+      - /opt/paperless-ngx/database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+    networks:
+      paperless:
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+    volumes:
+      - /opt/paperless-ngx/data:/usr/src/paperless/data
+      - /opt/paperless-ngx/media:/usr/src/paperless/media
+      - ./export:/usr/src/paperless/export
+      - /opt/paperless-ngx/consume:/usr/src/paperless/consume
+    env_file: config.env
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.paperless.entrypoints=http"
+      - "traefik.http.routers.paperless.rule=Host(`paperless.kibit.net`)"
+      - "traefik.http.middlewares.paperless-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.paperless.middlewares=paperless-https-redirect"
+      - "traefik.http.routers.paperless-secure.entrypoints=https"
+      - "traefik.http.routers.paperless-secure.rule=Host(`paperless.kibit.net`)"
+      - "traefik.http.routers.paperless-secure.tls=true"
+      - "traefik.docker.network=proxy"
+    networks:
+      paperless:
+      proxy:
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  redisdata:
+
+networks:
+  paperless:
+  proxy:
+    external: true
