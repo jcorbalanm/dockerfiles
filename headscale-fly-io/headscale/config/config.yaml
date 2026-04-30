@@ -276,6 +276,9 @@ dns:
   # `hostname.base_domain` (e.g., _myhost.example.com_).
   base_domain: kibit.net
 
+  #TODO: update config file
+  override_local_dns: false
+
   # List of DNS servers to expose to clients.
   nameservers:
     global:
