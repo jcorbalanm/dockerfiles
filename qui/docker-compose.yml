@@ -1,0 +1,28 @@
+services:
+  qui:
+    image: ghcr.io/autobrr/qui:latest
+    container_name: qui
+    restart: unless-stopped
+    volumes:
+      - /opt/qui:/config
+      - /opt/qbittorrent/appdata:/config
+      - /media:/media
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.qui.entrypoints=http"
+      - "traefik.http.routers.qui.rule=Host(`qui.kibit.net`)"
+      - "traefik.http.middlewares.qui-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.qui.middlewares=qui-https-redirect"
+      - "traefik.http.routers.qui-secure.entrypoints=https"
+      - "traefik.http.routers.qui-secure.rule=Host(`qui.kibit.net`)"
+      - "traefik.http.routers.qui-secure.tls=true"
+      - "traefik.docker.network=proxy"
+      - "com.centurylinklabs.watchtower.enable=false"
+    networks:
+      proxy:
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  proxy:
+    external: true
