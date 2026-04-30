@@ -27,6 +27,7 @@ services:
       - "traefik.http.routers.qbittorrent-secure.rule=Host(`qbittorrent.kibit.net`)"
       - "traefik.http.routers.qbittorrent-secure.tls=true"
       - "traefik.docker.network=proxy"
+      - "com.centurylinklabs.watchtower.enable=false"
     networks:
       proxy:
     security_opt:
