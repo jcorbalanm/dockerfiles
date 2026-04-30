@@ -1,0 +1,61 @@
+secrets:
+  cloudflare-email:
+    file: ./cloudflare-email
+  cloudflare-dns-token:
+    file: ./cloudflare-dns-token
+
+services:
+  traefik:
+    image: traefik:latest
+    # Enables the web UI and tells Traefik to listen to docker
+    #command: --api.insecure=true --providers.docker
+    security_opt:
+      - no-new-privileges:true
+    secrets:
+      - cloudflare-email
+      - cloudflare-dns-token
+    env_file:
+      - .env
+
+    environment:
+      TRAEFIK_DASHBOARD_CREDENTIALS: ${TRAEFIK_DASHBOARD_CREDENTIALS}
+      CLOUDFLARE_API_EMAIL_FILE: /run/secrets/cloudflare-email
+      CF_DNS_API_TOKEN_FILE: /run/secrets/cloudflare-dns-token
+    networks:
+      proxy:
+    ports:
+      - "80:80"
+      - "443:443"
+      # The Web UI (enabled by --api.insecure=true)
+      #- "8080:8080"
+    restart: unless-stopped
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml:ro
+      - ./config.yml:/config.yml:ro
+      - ./acme.json:/acme.json
+      - /opt/traefik/logs:/var/log/traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.kibit.net`)"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.kibit.net`)"
+      - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].main=kibit.net"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.kibit.net"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.mc.kibit.net"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+      - "com.centurylinklabs.watchtower.enable=false"
+
+networks:
+  proxy:
+    external: true
