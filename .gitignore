@@ -1,4 +1,4 @@
-headscale-fly-io/headscale/fly-wireguard/wg0.conf
+wg0.conf
 .env
 cloudflare-dns-token
 cloudflare-email
