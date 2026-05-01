@@ -17,7 +17,6 @@ services:
       - "traefik.http.routers.qui-secure.rule=Host(`qui.kibit.net`)"
       - "traefik.http.routers.qui-secure.tls=true"
       - "traefik.docker.network=proxy"
-      - "com.centurylinklabs.watchtower.enable=false"
     networks:
       proxy:
     security_opt:
